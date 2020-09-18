@@ -1,0 +1,33 @@
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Arial';
+}
+
+h1{
+    text-align: center;
+    font-family: 'Arial';
+}
+.mes{
+    display: flex;
+    flex-wrap: wrap;
+    font-family: 'Arial';
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.mes span{
+    flex-basis: 14%;
+    text-align: center;
+    margin: 20px 0;
+    transition: 200ms;
+    padding: 10px;
+}
+
+.mes span:hover{
+    background-color: #333;
+    color: white;
+}
