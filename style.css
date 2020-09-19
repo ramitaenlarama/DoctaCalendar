@@ -31,3 +31,15 @@ h1{
     background-color: #333;
     color: white;
 }
+
+.formulario{
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.formulario input,.formulario textarea{
+    margin-bottom: 20px;
+}
+

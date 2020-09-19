@@ -14,16 +14,14 @@ completo de la fecha con el siguiente formato "año-mes-día por ejemplo 2020-09
 2 - Al hacer click sobre una fecha tenemos que visualizar los eventos que tenemos
 para ese día, mostrando nombre, descripción, fecha y hora del o los eventos.
 
-
 3 - Crear un formulario que nos permita cagar eventos nuevos;
 
-4 - Agregar a cada evento cuando se muestre un botón para poder eliminarlos.
+4 - Agregar a cada evento cuando se muestre, un botón para poder eliminarlos.
 
 */
 
 
-let eventos = [
-    {
+let eventos = [{
         nombre: 'Pagar sueldos',
         descripcion: 'Realizar tranferecias para pagos de sueldos',
         fecha: '2020-09-05',
@@ -61,14 +59,14 @@ let eventos = [
 
 let $septiembre = document.querySelector('#mesSeptiembre');
 
-function crearMes(mes){
-    for(let i = 1; i <= 30; i++){
+function crearMes(mes) {
+    for (let i = 1; i <= 30; i++) {
         let $span = document.createElement('span');
-        
-        if(i<10){
-            $span.setAttribute('dato-fecha',`2020-09-0${i}`);
-        }else{
-            $span.setAttribute('dato-fecha',`2020-09-${i}`);
+
+        if (i < 10) {
+            $span.setAttribute('dato-fecha', `2020-09-0${i}`);
+        } else {
+            $span.setAttribute('dato-fecha', `2020-09-${i}`);
         }
 
         $span.innerHTML = i;
@@ -85,16 +83,31 @@ crearMes($septiembre);
 let $dias = document.querySelectorAll('.mes span');
 let $listaEventos = document.querySelector('#listaEventos');
 console.log($listaEventos)
-$dias.forEach(function(dia){
-    dia.addEventListener('click', function(){
-        let eventosSeleccionado = eventos.filter(function(evento){
-            return dia.getAttribute('dato-fecha') == evento.fecha 
+$dias.forEach(function (dia) {
+    dia.addEventListener('click', function () {
+        let eventosSeleccionado = eventos.filter(function (evento) {
+            return dia.getAttribute('dato-fecha') == evento.fecha
         })
+        let $eliminarDia = document.createElement('button');
 
-        
+        $eliminarDia.innerHTML = 'Eliminar día';
+        $eliminarDia.addEventListener('click',function(){
+            eventosSeleccionado.forEach(function(eventoSeleccionado){
+                let eventoPos = eventos.findIndex(function(evento){
+                    return evento.nombre == eventoSeleccionado.nombre;
+                })
+
+                eventos.splice(eventoPos,1);
+            })
+
+            $eliminarDia.remove();
+        });
+
+        $septiembre.after($eliminarDia);
+
         $listaEventos.innerHTML = '';
 
-        eventosSeleccionado.forEach(function(evento){
+        eventosSeleccionado.forEach(function (evento) {
             let $nombre = document.createElement('h3');
             $nombre.innerHTML = evento.nombre;
             let $descripcion = document.createElement('p');
@@ -104,11 +117,31 @@ $dias.forEach(function(dia){
             $fecha.innerHTML = `${dateFecha.getDate()}/${dateFecha.getMonth()+1}/${dateFecha.getFullYear()}`;
             let $hora = document.createElement('p');
             $hora.innerHTML = `${evento.hora} Hs`;
+            let $eliminar = document.createElement('button');
+            $eliminar.innerHTML = 'Eliminar';
+
+            let pos = eventos.findIndex(function (event) {
+                return evento.nombre == event.nombre;
+            });
+
+
+            $eliminar.addEventListener('click', function () {
+
+                eventos.splice(pos, 1);
+
+                $nombre.remove();
+                $descripcion.remove();
+                $fecha.remove();
+                $hora.remove();
+                $eliminar.remove();
+
+            })
 
             $listaEventos.appendChild($nombre);
             $listaEventos.appendChild($descripcion);
             $listaEventos.appendChild($fecha);
             $listaEventos.appendChild($hora);
+            $listaEventos.appendChild($eliminar);
 
         })
 
@@ -116,4 +149,27 @@ $dias.forEach(function(dia){
 })
 
 
+//Punto número 3
 
+
+let $formulario = document.querySelector('#agregarEvento');
+
+$formulario.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    let $nombre = document.querySelector('#nombre').value;
+    let $descripcion = document.querySelector('#descripcion').value;
+    let $fecha = document.querySelector('#fecha').value;
+    let $hora = document.querySelector('#hora').value;
+
+    let nuevoEvento = {
+        nombre: $nombre,
+        descripcion: $descripcion,
+        fecha: $fecha,
+        hora: $hora
+    };
+    console.log(nuevoEvento);
+    eventos.push(nuevoEvento);
+    $formulario.reset();
+
+})
